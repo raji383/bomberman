@@ -12,12 +12,12 @@ export class Game {
         this.ui = new Ui(this);
         this.input = new KeyboardListner(this);
         this.player = new Player(this, 1, 1);
-        this.puse = false;
+        this.pause = false;
         this.pPressedLastFrame = false;
         this.gameOver = false;
-        this.maxEnemies = 5;
-        this.enemies = []
+        this.maxEnemies = 4;
         this.startDraw = true
+        this.enemies = []
         this.emptySpaces = this.map.findEmptySpaces()
         for (let i = 0; i < this.maxEnemies; i++) {
             let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
@@ -28,12 +28,13 @@ export class Game {
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-            while (this.enemies.length-1 < this.maxEnemies) {
+            while (this.enemies.length - 1 < this.maxEnemies) {
                 let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
                 this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
             }
             this.map.draw()
         }
+        // console.log('map created');
         this.player.draw();
         this.ui.draw(deltaTime);
 
@@ -54,11 +55,11 @@ export class Game {
     update(deltaTime) {
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
-            this.puse = !this.puse;
+            this.pause = !this.pause;
         }
         this.pPressedLastFrame = pPressed;
 
-        if (!this.puse && !this.gameOver) {
+        if (!this.pause && !this.gameOver) {
             this.player.update();
             this.enemies.forEach(enemy => {
                 enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
