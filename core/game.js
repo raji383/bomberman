@@ -1,0 +1,70 @@
+import { variables } from "./variables.js"
+import { Map } from "./map.js"
+import { Player } from "./player.js"
+import { Enemies } from "./enemies.js"
+import { Ui, KeyboardListner } from "./tools.js"
+
+
+
+export class Game {
+    constructor() {
+        this.map = new Map(this);
+        this.ui = new Ui(this);
+        this.input = new KeyboardListner(this);
+        this.player = new Player(this, 1, 1);
+        this.puse = false;
+        this.pPressedLastFrame = false;
+        this.gameOver = false;
+        this.maxEnemies = 5;
+        this.enemies = []
+        this.startDraw = true
+        this.emptySpaces = this.map.findEmptySpaces()
+        for (let i = 0; i < this.maxEnemies; i++) {
+            let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+            this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+        }
+    }
+
+    draw(deltaTime) {
+        if (this.startDraw) {
+            this.startDraw = false
+            while (this.enemies.length-1 < this.maxEnemies) {
+                let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
+                this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
+            }
+            this.map.draw()
+        }
+        this.player.draw();
+        this.ui.draw(deltaTime);
+
+        const livesEl = document.querySelector('#ui h1');
+        if (livesEl) {
+            livesEl.textContent = `Lives: ${this.player.lives}`;
+        }
+
+        const scoreEl = document.getElementById('score');
+        if (scoreEl) {
+            scoreEl.textContent = `Score: ${this.ui.score}`;
+        }
+        this.enemies.forEach(enemy => {
+            enemy.render();
+        })
+    }
+
+    update(deltaTime) {
+        const pPressed = this.input.keys.includes('p');
+        if (pPressed && !this.pPressedLastFrame) {
+            this.puse = !this.puse;
+        }
+        this.pPressedLastFrame = pPressed;
+
+        if (!this.puse && !this.gameOver) {
+            this.player.update();
+            this.enemies.forEach(enemy => {
+                enemy.update(deltaTime, this.map); // Pass deltaTime and the actual map array
+            });
+            this.enemies = this.enemies.filter(enemy => enemy.isAlive);
+        }
+    }
+
+}
