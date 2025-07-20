@@ -62,11 +62,11 @@ function startGame() {
                 blur.style.filter = 'none'
             } else if (e.target.dataset.diff === 'medium') {
                 blur.style.filter = 'none'
-                game.maxEnemies = 6;
+                game.maxEnemies = 8;
                 game.player.maxLives = 4
             } else if (e.target.dataset.diff === 'hard') {
                 blur.style.filter = 'none'
-                game.maxEnemies = 4;
+                game.maxEnemies = 18;
                 game.player.maxLives = 3
             }
             animate(0);
