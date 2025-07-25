@@ -5,8 +5,12 @@ export class KeyboardListner {
     constructor(game) {
         this.game = game;
         this.keys = [];
+
+        const validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'];
+
+       
         window.addEventListener('keydown', e => {
-            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key) && !e.repeat) {
+            if (validKeys.includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
                     this.keys.push(e.key);
                 }
@@ -14,15 +18,63 @@ export class KeyboardListner {
         });
 
         window.addEventListener('keyup', e => {
-            if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'].includes(e.key)) {
-                const index = this.keys.indexOf(e.key);
+            const index = this.keys.indexOf(e.key);
+            if (index > -1) {
+                this.keys.splice(index, 1);
+            }
+        });
+
+       
+        document.querySelectorAll('.control').forEach(botn => {
+            botn.addEventListener('mousedown', (e) => {
+                const key = this.mapValueToKey(e.target.value);
+                if (key && !this.keys.includes(key)) {
+                    this.keys.push(key);
+                }
+            });
+
+            botn.addEventListener('mouseup', (e) => {
+                const key = this.mapValueToKey(e.target.value);
+                const index = this.keys.indexOf(key);
                 if (index > -1) {
                     this.keys.splice(index, 1);
                 }
-            }
+            });
+
+          
+            botn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const key = this.mapValueToKey(e.target.value);
+                if (key && !this.keys.includes(key)) {
+                    this.keys.push(key);
+                }
+            }, { passive: false });
+
+            botn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                const key = this.mapValueToKey(e.target.value);
+                const index = this.keys.indexOf(key);
+                if (index > -1) {
+                    this.keys.splice(index, 1);
+                }
+            }, { passive: false });
         });
     }
+
+  
+    mapValueToKey(value) {
+        switch (value) {
+            case 'l': return 'ArrowLeft';
+            case 'r': return 'ArrowRight';
+            case 'u': return 'ArrowUp';
+            case 'd': return 'ArrowDown';
+            case 'bom': return ' ';
+            case 'p': return 'p';
+            default: return null;
+        }
+    }
 }
+
 
 
 export class Ui {

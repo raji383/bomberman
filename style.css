@@ -189,7 +189,7 @@ body {
     }
 
     #difficulty-card {
-        justify-content: space-between; 
+        justify-content: space-between;
         padding: 10px 20px;
         border-radius: 18px;
         border: 2px solid #ffb300;
@@ -218,4 +218,57 @@ body {
     }
 
 
+}
+
+.control {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #3c3c3c, #1c1c1c);
+    box-shadow: 4px 4px 10px #111, -4px -4px 10px #444;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    position: relative;
+}
+
+.control:active {
+    transform: scale(0.95);
+    box-shadow: inset 2px 2px 5px #111, inset -2px -2px 5px #444;
+}
+
+.control[value="l"]::before {
+    content: "←";
+}
+
+.control[value="r"]::before {
+    content: "→";
+}
+
+.control[value="u"]::before {
+    content: "↑";
+}
+
+.control[value="d"]::before {
+    content: "↓";
+}
+
+.control[value="bom"]::before {
+    content: "💣";
+}
+
+.control[value="p"]::before {
+    content: "⏸";
+}
+
+.controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
