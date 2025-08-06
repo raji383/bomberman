@@ -33,6 +33,7 @@ function animate(timestamp) {
                 blur.style.filter = 'blur(10px)';
                 jj.style.display = 'block';
                 constinue.style.display = 'none';
+                scoreBoard(jj)
             }
         }
     } else {
@@ -57,6 +58,26 @@ function animate(timestamp) {
         requestAnimationFrame(animate);
 
     }
+}
+function scoreBoard(form) {
+    if (document.getElementById('scoreboard')) {
+        return;
+    }
+
+    const div = document.createElement('div');
+    div.id = 'scoreboard';
+
+    div.innerHTML = `
+      <div class="score-header">SCORE: ${variables.Score}, Time: ${variables.time}</div>
+      <h1>Win</h1>
+      <input type="text" name="name" placeholder="Your name" required />
+      <input type="hidden" name="score" value="${variables.Score}">
+      <input type="hidden" name="time" value="${variables.time}">
+      <button type="submit">Submit Name</button>
+    `;
+
+    form.innerHTML = '';
+    form.appendChild(div);
 }
 
 export function startGame() {
@@ -94,7 +115,7 @@ export function startGame() {
             overlay.remove();
             if (e.target.dataset.diff === 'easy') {
                 document.getElementById('ui').style.display = 'flex';
-                game.maxEnemies = 4;
+                game.maxEnemies = 1;
                 blur.style.filter = 'none'
                 game.startDraw = true
 
@@ -142,3 +163,39 @@ export function startGame() {
     })
 }
 startGame();
+async function loadScores() {
+    try {
+        const response = await fetch("/scores.json");
+        const scores = await response.json();
+
+        const container = document.getElementById("scoreboard");
+        container.innerHTML = `
+            <h2>Scoreboard</h2>
+            <table border="1" cellpadding="8" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${scores.map(player => `
+                        <tr>
+                            <td>${player.Rank}</td>
+                            <td>${player.name}</td>
+                            <td>${player.Score}</td>
+                            <td>${player.time}</td>
+                        </tr>
+                    `).join("")}
+                </tbody>
+            </table>
+        `;
+    } catch (err) {
+        console.error("Failed to load scores:", err);
+    }
+}
+
+window.onload = loadScores;
+

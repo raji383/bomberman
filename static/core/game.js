@@ -24,7 +24,7 @@ export class Game {
     draw(deltaTime) {
         if (this.startDraw) {
             this.startDraw = false
-            while (this.enemies.length  < this.maxEnemies) {
+            while (this.enemies.length < this.maxEnemies) {
                 let place = this.emptySpaces[Math.floor(Math.random() * this.emptySpaces.length)]
                 this.enemies.push(new Enemies(place.y * variables.GRID_CELL_SIZE, (place.x) * variables.GRID_CELL_SIZE, this.map, variables.GRID_CELL_SIZE, variables.initialSpeed));
             }
@@ -50,9 +50,11 @@ export class Game {
     }
 
     update(deltaTime) {
-        if (this.enemies.length==0) {
+        if (this.enemies.length == 0) {
             this.gameOver = true;
-            
+            variables.time = this.ui.timeM.toString().padStart(2, '0') + ":" + this.ui.timeS.toString().padStart(2, '0')
+            variables.Score = this.ui.score
+
         }
         const pPressed = this.input.keys.includes('p');
         if (pPressed && !this.pPressedLastFrame) {
