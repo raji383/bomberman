@@ -13,7 +13,7 @@ export class Player {
         this.maxLives = 5
         this.bombs = [];
         this.maxBombs = 3;
-        this.img = './img/player/player.png';
+        this.img = './static/img/player/player.png';
         this.totalFrames = 5;
         this.frameWidth = 20;
         this.currentFrame = 0;

@@ -29,7 +29,7 @@ export class Enemies {
             z-index: 100;
             position: absolute;
             will-change: transform;
-            background-image: url('./img/enemy.png');
+            background-image: url('./static/img/enemy.png');
             background-repeat: no-repeat;
             image-rendering: pixelate
             transform: translate(${this.y}px, ${this.x}px)
