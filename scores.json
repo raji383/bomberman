@@ -1,13 +1,25 @@
 [
   {
-    "name": "raji",
+    "name": "player1",
     "Rank": 1,
+    "Score": 40,
+    "time": "00:34"
+  },
+  {
+    "name": "raji",
+    "Rank": 2,
     "Score": 30,
     "time": "00:26"
   },
   {
+    "name": "player2",
+    "Rank": 3,
+    "Score": 30,
+    "time": "00:22"
+  },
+  {
     "name": "ana",
-    "Rank": 2,
+    "Rank": 4,
     "Score": 20,
     "time": "00:20"
   }

@@ -94,6 +94,7 @@ export function startGame() {
     <button class="diff-btn" data-diff="easy">Easy</button>
     <button class="diff-btn" data-diff="medium">Medium</button>
     <button class="diff-btn" data-diff="hard">Hard</button>
+    <div id="scoreboard"></div>
     `;
     document.body.appendChild(overlay);
     let blur = document.getElementById('blur-wrapper')

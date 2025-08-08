@@ -12,15 +12,24 @@ body {
 }
 
 #scoreboard {
-    background: linear-gradient(135deg, #fdfbfb, #ebedee);
-    border-radius: 12px;
-    padding: 30px;
-    width: 300px;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    text-align: center;
+    margin: 10px;
+    background: #1c1c22;
+    color: #ffb300;
+    border: 2px solid #ffb300;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-family: 'Bitcount Grid Single', monospace;
 }
+
+table {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+}
+
 
 #scoreboard .score-header {
     font-weight: bold;
