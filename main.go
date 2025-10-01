@@ -68,11 +68,23 @@ func ScoreHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+func Lodscroe(w http.ResponseWriter, r *http.Request) {
+	var players []Player
+	filePath := "scores.json"
+
+	if data, err := os.ReadFile(filePath); err == nil {
+		json.Unmarshal(data, &players)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(players)
+}
+
 func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	http.Handle("/scores.json", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/", HomeHandler)
+	http.HandleFunc("/loadscroe", Lodscroe)
 	http.HandleFunc("/score", ScoreHandler)
 	fmt.Println("Server started at http://localhost:8080")
 	err := http.ListenAndServe(":8080", nil)

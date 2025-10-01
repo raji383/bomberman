@@ -172,7 +172,7 @@ let scores = [];
 
 async function loadScores() {
     try {
-        const response = await fetch("/scores.json");
+        const response = await fetch("/loadscroe");
         scores = await response.json();
 
 

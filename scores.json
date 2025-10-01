@@ -36,20 +36,32 @@
     "time": "00:08"
   },
   {
-    "name": "111",
+    "name": "azeddine01",
     "Rank": 7,
-    "Score": 0,
-    "time": "0"
+    "Score": 20,
+    "time": "00:59"
   },
   {
-    "name": "yes",
+    "name": "111",
     "Rank": 8,
     "Score": 0,
     "time": "0"
   },
   {
-    "name": "azeddine",
+    "name": "yes",
     "Rank": 9,
+    "Score": 0,
+    "time": "0"
+  },
+  {
+    "name": "azeddine",
+    "Rank": 10,
+    "Score": 0,
+    "time": "0"
+  },
+  {
+    "name": "ناضي",
+    "Rank": 11,
     "Score": 0,
     "time": "0"
   }
