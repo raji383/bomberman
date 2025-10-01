@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"sort"
 	"strconv"
 )
@@ -36,7 +36,7 @@ func ScoreHandler(w http.ResponseWriter, r *http.Request) {
 	var players []Player
 	filePath := "scores.json"
 
-	if data, err := ioutil.ReadFile(filePath); err == nil {
+	if data, err := os.ReadFile(filePath); err == nil {
 		json.Unmarshal(data, &players)
 	}
 
@@ -60,7 +60,7 @@ func ScoreHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := ioutil.WriteFile(filePath, jsonData, 0o644); err != nil {
+	if err := os.WriteFile(filePath, jsonData, 0o644); err != nil {
 		http.Error(w, "Failed to save data", http.StatusInternalServerError)
 		return
 	}

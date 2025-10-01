@@ -6,21 +6,51 @@
     "time": "00:34"
   },
   {
-    "name": "raji",
+    "name": "000",
     "Rank": 2,
+    "Score": 40,
+    "time": "00:40"
+  },
+  {
+    "name": "raji",
+    "Rank": 3,
     "Score": 30,
     "time": "00:26"
   },
   {
     "name": "player2",
-    "Rank": 3,
+    "Rank": 4,
     "Score": 30,
     "time": "00:22"
   },
   {
     "name": "ana",
-    "Rank": 4,
+    "Rank": 5,
     "Score": 20,
     "time": "00:20"
+  },
+  {
+    "name": "1",
+    "Rank": 6,
+    "Score": 20,
+    "time": "00:08"
+  },
+  {
+    "name": "111",
+    "Rank": 7,
+    "Score": 0,
+    "time": "0"
+  },
+  {
+    "name": "yes",
+    "Rank": 8,
+    "Score": 0,
+    "time": "0"
+  },
+  {
+    "name": "azeddine",
+    "Rank": 9,
+    "Score": 0,
+    "time": "0"
   }
 ]

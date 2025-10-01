@@ -2,7 +2,7 @@ import { Game } from "./core/game.js"
 import { variables } from "./core/variables.js"
 import { Enemies } from "./core/enemies.js"
 
-
+window.changePage = changePage;
 
 let game
 let lastTime = 0;
@@ -27,15 +27,15 @@ function animate(timestamp) {
             pauseEl.style.display = 'block';
             blur.style.filter = 'blur(10px)';
             constinue.style.display = 'none';
-        } else {
-            if (jj) {
-                pauseEl.style.display = 'block';
-                blur.style.filter = 'blur(10px)';
-                jj.style.display = 'block';
-                constinue.style.display = 'none';
-                scoreBoard(jj)
-            }
         }
+        if (jj) {
+            pauseEl.style.display = 'block';
+            blur.style.filter = 'blur(10px)';
+            jj.style.display = 'block';
+            constinue.style.display = 'none';
+            scoreBoard(jj)
+        }
+
     } else {
         if (pauseEl) {
             pauseEl.style.display = 'none';
@@ -78,6 +78,9 @@ function scoreBoard(form) {
 
     form.innerHTML = '';
     form.appendChild(div);
+    form.addEventListener('submit', (e) => {
+        loadScores();
+    });
 }
 
 export function startGame() {
@@ -164,39 +167,67 @@ export function startGame() {
     })
 }
 startGame();
+let currentPage = 1;
+let scores = [];
+
 async function loadScores() {
     try {
         const response = await fetch("/scores.json");
-        const scores = await response.json();
+        scores = await response.json();
 
-        const container = document.getElementById("scoreboard");
-        container.innerHTML = `
-            <h2>Scoreboard</h2>
-            <table border="1" cellpadding="8" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Score</th>
-                        <th>Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${scores.map(player => `
-                        <tr>
-                            <td>${player.Rank}</td>
-                            <td>${player.name}</td>
-                            <td>${player.Score}</td>
-                            <td>${player.time}</td>
-                        </tr>
-                    `).join("")}
-                </tbody>
-            </table>
-        `;
+
+        generateTablePage(currentPage);
+
     } catch (err) {
         console.error("Failed to load scores:", err);
     }
 }
+const container = document.getElementById("scoreboard");
+const rowsPerPage = 5;
+
+function generateTablePage(page) {
+    const startIndex = (page - 1) * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    const pageData = scores.slice(startIndex, endIndex);
+
+    const tableHTML = `
+                <h2>Scoreboard</h2>
+                <table border="1" cellpadding="8" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${pageData.map(player => `
+                            <tr>
+                                <td>${player.Rank}</td>
+                                <td>${player.name}</td>
+                                <td>${player.Score}</td>
+                                <td>${player.time}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <button ${page === 1 ? "disabled" : ""} onclick="changePage(${page - 1})">Previous</button>
+                    <button ${page === Math.ceil(scores.length / rowsPerPage) ? "disabled" : ""} onclick="changePage(${page + 1})">Next</button>
+                </div>
+            `;
+    container.innerHTML = tableHTML;
+}
+
+function changePage(page) {
+    const rowsPerPage = 5;
+    if (page >= 1 && page <= Math.ceil(scores.length / rowsPerPage)) {
+        currentPage = page;
+        generateTablePage(currentPage);
+    }
+}
 
 window.onload = loadScores;
+
 
