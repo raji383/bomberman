@@ -27,13 +27,6 @@ type Player struct {
 }
 
 func ScoreHandler(w http.ResponseWriter, r *http.Request) {
-	k := r.Header.Get("Accept")
-
-	if k != "*/*" {
-
-		http.Redirect(w, r, "/", http.StatusSeeOther)
-		return
-	}
 	r.ParseForm()
 	name := r.FormValue("name")
 	time := r.FormValue("time")
