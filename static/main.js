@@ -7,6 +7,7 @@ window.changePage = changePage;
 let game
 let lastTime = 0;
 var a = null;
+let paus = false;
 function animate(timestamp) {
     let deltatime = timestamp - lastTime;
     lastTime = timestamp;
@@ -20,6 +21,10 @@ function animate(timestamp) {
     if (game.pause) {
         pauseEl.style.display = 'block';
         blur.style.filter = 'blur(10px)';
+        paus = true
+        clearInterval(game.ui.interval)
+
+
     } else if (game.gameOver) {
 
         if (game.enemies.length !== 0) {
@@ -35,11 +40,17 @@ function animate(timestamp) {
             constinue.style.display = 'none';
             scoreBoard(jj)
         }
+        clearInterval(game.ui.interval)
+
 
     } else {
         if (pauseEl) {
             pauseEl.style.display = 'none';
             blur.style.filter = 'none'
+        }
+        if (paus) {
+            game.ui.go = true
+            paus = false
         }
         game.draw(deltatime);
     }
@@ -68,11 +79,11 @@ function scoreBoard(form) {
     div.id = 'scoreboard';
 
     div.innerHTML = `
-      <div class="score-header">SCORE: ${variables.Score}, Time: ${variables.time}</div>
+      <div class="score-header">SCORE: ${game.ui.score}, Time: ${game.ui.timeM.toString().padStart(2, '0')}:${game.ui.timeS.toString().padStart(2, '0')}</div>
       <h1>Win</h1>
       <input type="text" name="name" placeholder="Your name" required />
-      <input type="hidden" name="score" value="${variables.Score}">
-      <input type="hidden" name="time" value="${variables.time}">
+      <input type="hidden" name="score" value="${game.ui.score}">
+      <input type="hidden" name="time" value="${game.ui.timeM.toString().padStart(2, '0')}:${game.ui.timeS.toString().padStart(2, '0')}">
       <button type="submit">Submit Name</button>
     `;
 
@@ -154,6 +165,7 @@ export function startGame() {
                 }
             }
             variables.start = false;
+            game.ui.go = true
             animate(0);
         };
 

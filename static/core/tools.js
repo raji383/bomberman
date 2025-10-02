@@ -8,7 +8,7 @@ export class KeyboardListner {
 
         const validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' ', 'p'];
 
-       
+
         window.addEventListener('keydown', e => {
             if (validKeys.includes(e.key) && !e.repeat) {
                 if (!this.keys.includes(e.key)) {
@@ -24,7 +24,7 @@ export class KeyboardListner {
             }
         });
 
-       
+
         document.querySelectorAll('.control').forEach(botn => {
             botn.addEventListener('mousedown', (e) => {
                 const key = this.mapValueToKey(e.target.value);
@@ -41,7 +41,7 @@ export class KeyboardListner {
                 }
             });
 
-          
+
             botn.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 const key = this.mapValueToKey(e.target.value);
@@ -61,7 +61,7 @@ export class KeyboardListner {
         });
     }
 
-  
+
     mapValueToKey(value) {
         switch (value) {
             case 'l': return 'ArrowLeft';
@@ -85,19 +85,26 @@ export class Ui {
         this.timeM = 0; //minutes
         this.elapsed = 0;
         this.gameOver = null;
+        this.go = false;
+        this.interval = null;
+
         [this.pauseButton, this.restartButton] = [document.getElementById('pause-button'), document.getElementById('restart')];
     }
 
-    draw(deltaTime) {
-        this.elapsed += deltaTime;
-        if (this.elapsed >= 1000) {
-            this.timeS += Math.floor(this.elapsed / 1000);
-            this.elapsed %= 1000;
+    draw() {
+
+        if (this.go) {
+            this.go = false
+            this.interval = setInterval(() => {
+                if (this.timeS === 59) { 
+                    this.timeS = 0;
+                    this.timeM += 1;                 
+                } else {
+                    this.timeS += 1;
+                }
+            }, 1000);
         }
-        if (this.timeS >= 60) {
-            this.timeM += 1;
-            this.timeS = 0;
-        }
+
         const timeEl = document.getElementById('time');
         if (timeEl) {
             timeEl.textContent = `time: ${this.timeM.toString().padStart(2, '0')}:${this.timeS.toString().padStart(2, '0')}`;

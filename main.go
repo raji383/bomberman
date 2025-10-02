@@ -8,9 +8,14 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	http.ServeFile(w, r, "index.html")
 }
 
@@ -22,6 +27,13 @@ type Player struct {
 }
 
 func ScoreHandler(w http.ResponseWriter, r *http.Request) {
+	k := r.Header.Get("Accept")
+
+	if k != "*/*" {
+
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	r.ParseForm()
 	name := r.FormValue("name")
 	time := r.FormValue("time")
@@ -69,6 +81,13 @@ func ScoreHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Lodscroe(w http.ResponseWriter, r *http.Request) {
+	k := r.Header.Get("Accept")
+
+	if k != "*/*" {
+
+		http.Redirect(w, r, "/", http.StatusSeeOther) // 303
+		return
+	}
 	var players []Player
 	filePath := "scores.json"
 
@@ -80,9 +99,18 @@ func Lodscroe(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(players)
 }
 
+func StyleHandler(w http.ResponseWriter, r *http.Request) {
+	filePath := strings.TrimPrefix(r.URL.Path, "/")
+	File, err := os.Stat(filePath)
+	if err != nil || File.IsDir() {
+		http.Redirect(w, r, "/", http.StatusSeeOther) // 303
+		return
+	}
+	http.ServeFile(w, r, filePath)
+}
+
 func main() {
-	fs := http.FileServer(http.Dir("static"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.HandleFunc("/static/", StyleHandler)
 	http.HandleFunc("/", HomeHandler)
 	http.HandleFunc("/loadscroe", Lodscroe)
 	http.HandleFunc("/score", ScoreHandler)
